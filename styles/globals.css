@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #008b8b;
+  --bg-soft: #007a7a;
+  --panel: rgba(4, 22, 30, 0.9);
+  --panel-strong: rgba(8, 31, 42, 0.96);
+  --border: rgba(226, 232, 240, 0.26);
+  --text: #f8fafc;
+  --muted: #c7d7df;
+  --accent: #2dd4bf;
+  --font-heading: "Aptos Display", "Avenir Next", "Segoe UI Variable Display", "Trebuchet MS", sans-serif;
+  --font-body: "Aptos", "Segoe UI Variable Text", "Frutiger", "Calibri", sans-serif;
+  --font-ui: "Bahnschrift", "DIN Next", "Segoe UI Semibold", "Arial Narrow", sans-serif;
+  --font-data: "IBM Plex Mono", "Consolas", "SFMono-Regular", monospace;
+}
+
+html[data-theme='light'] {
+  --bg: #008b8b;
+  --bg-soft: #007a7a;
+  --panel: rgba(255, 255, 255, 0.94);
+  --panel-strong: rgba(247, 250, 252, 0.98);
+  --border: rgba(8, 47, 47, 0.18);
+  --text: #082f2f;
+  --muted: #285e61;
+  --accent: #0f766e;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body), sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.012em;
+  line-height: 1.5;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading), sans-serif;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.font-ui {
+  font-family: var(--font-ui), sans-serif;
+  letter-spacing: 0.08em;
+}
+
+.font-data {
+  font-family: var(--font-data), monospace;
+  letter-spacing: -0.02em;
+}
+
+::selection {
+  background: rgba(45, 212, 191, 0.3);
+}
