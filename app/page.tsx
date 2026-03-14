@@ -236,18 +236,29 @@ export default function Home() {
   const [activeMenu, setActiveMenu] = useState<
     'products' | 'services' | 'solutions' | 'support' | 'partners' | null
   >(null);
+  const [localeOpen, setLocaleOpen] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState('IN');
+  const [selectedLanguage, setSelectedLanguage] = useState('EN');
   const navRef = useRef<HTMLElement | null>(null);
+  const localeRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     function handlePointerDown(event: MouseEvent) {
-      if (!navRef.current?.contains(event.target as Node)) {
+      const target = event.target as Node;
+
+      if (!navRef.current?.contains(target)) {
         setActiveMenu(null);
+      }
+
+      if (!localeRef.current?.contains(target)) {
+        setLocaleOpen(false);
       }
     }
 
     function handleEscape(event: KeyboardEvent) {
       if (event.key === 'Escape') {
         setActiveMenu(null);
+        setLocaleOpen(false);
       }
     }
 
@@ -262,13 +273,157 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-[linear-gradient(180deg,#edf7f7_0%,#dff1f1_100%)] text-slate-950">
-      <div className="border-b border-slate-200 bg-white/95">
+      <div className="relative border-b border-slate-200 bg-white/95">
         <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-4 px-4 py-3 text-sm text-slate-600 sm:px-6">
-          <div className="flex items-center gap-2">
-            <span className="text-base">◎</span>
-            <span>IN</span>
-            <span>|</span>
-            <span>EN</span>
+          <div ref={localeRef} className="relative">
+            <button
+              type="button"
+              onClick={() => setLocaleOpen((value) => !value)}
+              className={`flex items-center gap-2 border-b-2 pb-2 transition ${
+                localeOpen
+                  ? 'border-[#f97316] text-slate-950'
+                  : 'border-transparent text-slate-700 hover:text-slate-950'
+              }`}
+              aria-expanded={localeOpen}
+              aria-haspopup="dialog"
+            >
+              <svg
+                className="h-5 w-5 text-slate-800"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.6" />
+                <path d="M3 12H21" stroke="currentColor" strokeWidth="1.6" />
+                <path
+                  d="M12 3C14.7 5.7 16.25 8.75 16.25 12C16.25 15.25 14.7 18.3 12 21"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                />
+                <path
+                  d="M12 3C9.3 5.7 7.75 8.75 7.75 12C7.75 15.25 9.3 18.3 12 21"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                />
+              </svg>
+              <span className="text-lg font-medium">
+                {selectedCountry} | {selectedLanguage}
+              </span>
+              <svg
+                className={`h-4 w-4 transition ${localeOpen ? 'rotate-180' : ''}`}
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <path
+                  d="M5 7.5L10 12.5L15 7.5"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+
+            {localeOpen ? (
+              <div className="absolute left-0 top-full z-40 mt-[1px] w-[460px] border border-slate-200 bg-white px-7 py-8 shadow-[0_24px_70px_rgba(15,23,42,0.16)]">
+                <div>
+                  <p className="text-[2rem] font-semibold tracking-tight text-slate-800">
+                    Select country or region
+                  </p>
+                  <label className="mt-5 block text-lg font-medium text-slate-700">
+                    Country/Region*
+                  </label>
+                  <div className="relative mt-2">
+                    <select
+                      value={selectedCountry}
+                      onChange={(event) => setSelectedCountry(event.target.value)}
+                      className="h-14 w-full appearance-none rounded-[10px] border border-slate-500 bg-white px-5 pr-14 text-xl text-slate-700 outline-none transition focus:border-sky-600"
+                    >
+                      <option value="">Please make a selection</option>
+                      <option value="IN">India</option>
+                      <option value="US">United States</option>
+                      <option value="UK">United Kingdom</option>
+                      <option value="SG">Singapore</option>
+                    </select>
+                    <svg
+                      className="pointer-events-none absolute right-5 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-500"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M5 7.5L10 12.5L15 7.5"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </div>
+                </div>
+
+                <div className="mt-8">
+                  <p className="text-[2rem] font-semibold tracking-tight text-slate-800">
+                    Select language
+                  </p>
+                  <label className="mt-5 block text-lg font-medium text-slate-700">
+                    Language*
+                  </label>
+                  <div className="relative mt-2">
+                    <select
+                      value={selectedLanguage}
+                      onChange={(event) => setSelectedLanguage(event.target.value)}
+                      className="h-14 w-full appearance-none rounded-[10px] border border-slate-500 bg-white px-5 pr-14 text-xl text-slate-700 outline-none transition focus:border-sky-600"
+                    >
+                      <option value="">Please make a selection</option>
+                      <option value="EN">English</option>
+                      <option value="HI">Hindi</option>
+                      <option value="DE">German</option>
+                      <option value="FR">French</option>
+                    </select>
+                    <svg
+                      className="pointer-events-none absolute right-5 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-500"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M5 7.5L10 12.5L15 7.5"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </div>
+                </div>
+
+                <div className="mt-8 flex items-center justify-end gap-6">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedCountry('');
+                      setSelectedLanguage('');
+                    }}
+                    className="text-[1.05rem] font-semibold text-[#1d5fbf] transition hover:text-[#0f3f8f]"
+                  >
+                    Clear
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setLocaleOpen(false)}
+                    className="rounded-[8px] bg-[#2367ad] px-8 py-3 text-[1.05rem] font-semibold uppercase tracking-[0.06em] text-white transition hover:bg-[#1a4f85]"
+                  >
+                    Update
+                  </button>
+                </div>
+              </div>
+            ) : null}
           </div>
 
           <div className="hidden items-center gap-8 lg:flex">
